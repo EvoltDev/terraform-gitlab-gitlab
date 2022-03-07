@@ -99,3 +99,9 @@ variable "visibility_level" {
     type = string
     default = "private"
 }
+
+variable "user" {
+    description = "Map for list of users"
+    type = map
+    default = []
+}
