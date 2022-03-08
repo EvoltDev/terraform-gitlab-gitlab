@@ -36,3 +36,13 @@ resource "gitlab_group_membership" "group_membership" {
   access_level = each.value.access_level
   expires_at   = each.value.expires_at
 }
+
+resource "gitlab_group_membership" "parent_membership" {
+  for_each = var.user
+
+  group_id = gitlab_group.group.parent_id
+
+  user_id      = data.gitlab_user.user[each.key].user_id
+  access_level = "guest"
+  expires_at   = each.value.expires_at
+}

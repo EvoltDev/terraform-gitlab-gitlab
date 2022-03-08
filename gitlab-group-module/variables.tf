@@ -55,7 +55,7 @@ variable "mentions_disabled" {
 variable "parent_id" {
   description = "Group parent id"
   type        = number
-  default     = 16763063
+  default     = null
 }
 
 variable "project_creation_level" {
@@ -113,5 +113,5 @@ variable "user" {
 }
 
 variable "gitlab_token" {
-  type    = string
+  type = string
 }
