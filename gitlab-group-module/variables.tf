@@ -1,117 +1,30 @@
-variable "name" {
-  description = "Group name"
-  default     = "default_group_name"
-  type        = string
-}
-
-variable "path" {
-  description = "Group path"
-  default     = "default_group_path"
-  type        = string
-}
-
-variable "description" {
-  description = "Group description"
-  default     = "default_group_descrption"
-  type        = string
-}
-
-variable "auto_devops_enabled" {
-  description = "Group auto devops enabled"
-  default     = false
-  type        = bool
-}
-
-variable "default_branch_protection" {
-  description = "Group default branch protection"
-  default     = 2
-  type        = number
-}
-
-variable "emails_disabled" {
-  description = "Group emails disabled"
-  default     = false
-  type        = bool
-}
-
-variable "id" {
-  description = "Group id"
-  type        = string
-  default     = null
-}
-
-variable "lfs_enabled" {
-  description = "Group LFS enabled"
-  type        = bool
-  default     = true
-}
-
-variable "mentions_disabled" {
-  description = "Group mentions disalbed"
-  type        = bool
-  default     = false
-}
-
-variable "parent_id" {
-  description = "Group parent id"
-  type        = number
-  default     = null
-}
-
-variable "project_creation_level" {
-  description = "Group project creation level"
-  type        = string
-  default     = "Maintainer"
-}
-
-variable "request_access_enabled" {
-  description = "Group request access enabled"
-  type        = bool
-  default     = false
-}
-
-variable "require_two_factor_authentication" {
-  description = "Group require two factor authentication"
-  type        = bool
-  default     = false
-}
-
-variable "share_with_group_lock" {
-  description = "Group share with group lock"
-  type        = bool
-  default     = false
-}
-
-variable "subgroup_creation_level" {
-  description = "Group subgroup creation level"
-  type        = string
-  default     = "Owner"
-}
-
-variable "two_factor_grace_period" {
-  description = "Group two factor grace period"
-  type        = number
-  default     = 48
-}
-
-variable "visibility_level" {
-  description = "Group visibility level"
-  type        = string
-  default     = "private"
-}
-
-variable "user" {
-  description = "Map for list of users"
-  type        = map(any)
-  default = {
-    user_1 = {
-      username     = null
-      access_level = null
-      expires_at   = null
-    }
-  }
+variable "groups" {
+  description = "Map for list of groups"
+  type = map(object({
+    name                              = string
+    path                              = string
+    auto_devops_enabled               = optional(bool)
+    default_branch_protection         = optional(number)
+    description                       = optional(string)
+    emails_disabled                   = optional(bool)
+    lfs_enabled                       = optional(bool)
+    mentions_disabled                 = optional(bool)
+    parent_id                         = number
+    project_creation_level            = optional(string)
+    request_access_enabled            = optional(bool)
+    require_two_factor_authentication = optional(bool)
+    share_with_group_lock             = optional(bool)
+    subgroup_creation_level           = optional(string)
+    two_factor_grace_period           = optional(number)
+    visibility_level                  = optional(string)
+    users                             = map(any)
+  }))
 }
 
 variable "gitlab_token" {
   type = string
+}
+
+variable "users" {
+
 }

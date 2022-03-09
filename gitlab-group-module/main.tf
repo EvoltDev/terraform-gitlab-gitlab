@@ -1,48 +1,65 @@
+locals {
+  user_groups = flatten([
+    for user_key, user in var.users : [
+      for group_key, group in user.groups : {
+        user_key      = user_key
+        group_key     = group_key
+        username      = user.username
+        access_level  = user.access_level
+        expires_at    = user.expires_at
+        group_id      = gitlab_group.group[group_key].id
+        root_group_id = user.root_group_id
+      }
+    ]
+  ])
+}
+
 resource "gitlab_group" "group" {
+  for_each = var.groups
 
   # required
-  name = var.name
-  path = var.path
+  name = each.value.name
+  path = each.value.name
 
   # optional
-  description                       = var.description
-  auto_devops_enabled               = var.auto_devops_enabled
-  default_branch_protection         = var.default_branch_protection
-  emails_disabled                   = var.emails_disabled
-  lfs_enabled                       = var.lfs_enabled
-  mentions_disabled                 = var.mentions_disabled
-  parent_id                         = var.parent_id
-  project_creation_level            = var.project_creation_level
-  request_access_enabled            = var.request_access_enabled
-  require_two_factor_authentication = var.require_two_factor_authentication
-  share_with_group_lock             = var.share_with_group_lock
-  subgroup_creation_level           = var.subgroup_creation_level
-  two_factor_grace_period           = var.two_factor_grace_period
-  visibility_level                  = var.visibility_level
+  auto_devops_enabled               = lookup(each.value, "auto_devops_enabled", false)
+  default_branch_protection         = lookup(each.value, "default_branch_protection", 2)
+  description                       = lookup(each.value, "description", "default_description")
+  emails_disabled                   = lookup(each.value, "emails_disabled", false)
+  lfs_enabled                       = lookup(each.value, "lfs_enabled", true)
+  mentions_disabled                 = lookup(each.value, "mentions_disabled", false)
+  parent_id                         = lookup(each.value, "parent_id", 0)
+  project_creation_level            = lookup(each.value, "project_creation_level", "Maintainer")
+  request_access_enabled            = lookup(each.value, "request_access_enabled", false)
+  require_two_factor_authentication = lookup(each.value, "require_two_factor_authentication", false)
+  share_with_group_lock             = lookup(each.value, "share_with_group_lock", false)
+  subgroup_creation_level           = lookup(each.value, "subgroup_creation_level", "Owner")
+  two_factor_grace_period           = lookup(each.value, "two_factor_grace_period", 48)
+  visibility_level                  = lookup(each.value, "visibility_level", "private")
 
 }
 
 data "gitlab_user" "user" {
-  for_each = var.user
+  for_each = var.users
   username = each.value.username
 }
 
 resource "gitlab_group_membership" "group_membership" {
-  for_each = var.user
-
-  group_id = gitlab_group.group.id
-
-  user_id      = data.gitlab_user.user[each.key].user_id
+  for_each = {
+    for user_group in local.user_groups : "${user_group.user_key}.${user_group.group_key}" => user_group
+  }
+  group_id     = each.value.group_id
+  user_id      = data.gitlab_user.user[each.value.user_key].user_id
   access_level = each.value.access_level
   expires_at   = each.value.expires_at
 }
 
 resource "gitlab_group_membership" "parent_membership" {
-  for_each = var.user
-
-  group_id = gitlab_group.group.parent_id
-
-  user_id      = data.gitlab_user.user[each.key].user_id
+  for_each = {
+    for user_group in local.user_groups : "${user_group.user_key}.${user_group.group_key}" => user_group
+  }
+  group_id     = each.value.group_id
+  user_id      = data.gitlab_user.user[each.value.user_key].user_id
   access_level = "guest"
   expires_at   = each.value.expires_at
 }
