@@ -17,7 +17,6 @@ variable "groups" {
     subgroup_creation_level           = optional(string)
     two_factor_grace_period           = optional(number)
     visibility_level                  = optional(string)
-    users                             = map(any)
   }))
 }
 
@@ -26,5 +25,5 @@ variable "gitlab_token" {
 }
 
 variable "users" {
-
+    type = map(any)
 }

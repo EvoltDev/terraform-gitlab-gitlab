@@ -5,9 +5,9 @@ locals {
         user_key      = user_key
         group_key     = group_key
         username      = user.username
-        access_level  = user.access_level
-        expires_at    = user.expires_at
-        group_id      = gitlab_group.group[group_key].id
+        access_level  = group.access_level
+        expires_at    = group.expires_at
+        group_id      = data.gitlab_group.group[group_key].id
         root_group_id = user.root_group_id
       }
     ]
@@ -19,7 +19,7 @@ resource "gitlab_group" "group" {
 
   # required
   name = each.value.name
-  path = each.value.name
+  path = each.value.path
 
   # optional
   auto_devops_enabled               = lookup(each.value, "auto_devops_enabled", false)
@@ -39,6 +39,11 @@ resource "gitlab_group" "group" {
 
 }
 
+data "gitlab_group" "group" {
+  for_each = gitlab_group.group
+  group_id = each.value.id
+}
+
 data "gitlab_user" "user" {
   for_each = var.users
   username = each.value.username
@@ -52,13 +57,17 @@ resource "gitlab_group_membership" "group_membership" {
   user_id      = data.gitlab_user.user[each.value.user_key].user_id
   access_level = each.value.access_level
   expires_at   = each.value.expires_at
+
+  depends_on = [
+    gitlab_group_membership.parent_membership,
+  ]
 }
 
 resource "gitlab_group_membership" "parent_membership" {
   for_each = {
-    for user_group in local.user_groups : "${user_group.user_key}.${user_group.group_key}" => user_group
+    for user_group in local.user_groups : "${user_group.user_key}.${user_group.group_key}" => user_group if user_group.root_group_id != 0
   }
-  group_id     = each.value.group_id
+  group_id     = each.value.root_group_id
   user_id      = data.gitlab_user.user[each.value.user_key].user_id
   access_level = "guest"
   expires_at   = each.value.expires_at
