@@ -12,12 +12,12 @@ tf-fmt:
   stage: terraform:lint
   extends: .base-terraform
   script:
-    - terraform fmt -check -recursive
+    - terraform -chdir=examples/ fmt -check -recursive
   
 tf-validate:
   stage: terraform:lint
   extends: .base-terraform
   script: |
-      terraform init
-      terraform validate
+      terraform -chdir=examples/ init -backend-config="token=$TERRAFORM_LOGIN_TOKEN"
+      terraform -chdir=examples/ validate
 
