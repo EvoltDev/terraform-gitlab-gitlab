@@ -62,7 +62,7 @@ module "gitlab-group-module" {
 }
 
 terraform {
-  cloud {
+  backend "cloud_state" {
     organization = "evolt"
     workspaces { name = "gitlab-module" }
   }
