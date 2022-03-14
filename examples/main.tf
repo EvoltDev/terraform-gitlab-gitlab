@@ -60,3 +60,10 @@ module "gitlab-group-module" {
     }
   }
 }
+
+terraform {
+  cloud {
+    organization = "evolt"
+    workspaces { name = "gitlab-module" }
+  }
+}
