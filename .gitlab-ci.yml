@@ -18,6 +18,6 @@ tf-validate:
   stage: terraform:lint
   extends: .base-terraform
   script: |
-      terraform -chdir=examples/ init
+      terraform -chdir=examples/ init -backend-config="token=$TERRAFORM_LOGIN_TOKEN"
       terraform -chdir=examples/ validate
 
