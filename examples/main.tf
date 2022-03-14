@@ -53,7 +53,7 @@ module "gitlab-group-module" {
       root_group_id = module.gitlab-group-module-root.created_groups["group_1"].id
       groups = {
         group_1 = {
-          access_level = "maintainer"
+          access_level = "developer"
           expires_at   = null
         }
       }
