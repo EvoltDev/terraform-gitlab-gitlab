@@ -9,7 +9,7 @@ variable "groups" {
     emails_disabled                   = optional(bool)
     lfs_enabled                       = optional(bool)
     mentions_disabled                 = optional(bool)
-    parent_key                         = string
+    parent_key                        = string
     project_creation_level            = optional(string)
     request_access_enabled            = optional(bool)
     require_two_factor_authentication = optional(bool)
@@ -25,7 +25,7 @@ variable "gitlab_token" {
 }
 
 variable "parent_groups" {
-  type = map(any)
+  type    = map(any)
   default = null
 }
 

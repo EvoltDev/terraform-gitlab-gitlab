@@ -1,6 +1,6 @@
 module "gitlab-group-module-root" {
-  source        = "../gitlab-group-module"
-  gitlab_token  = var.gitlab_token
+  source       = "../gitlab-group-module"
+  gitlab_token = var.gitlab_token
   groups = {
     root_group = {
       auto_devops_enabled               = false
@@ -10,7 +10,7 @@ module "gitlab-group-module-root" {
       lfs_enabled                       = true
       mentions_disabled                 = false
       name                              = "dev"
-      parent_key                         = null
+      parent_key                        = null
       path                              = "dev2249"
       project_creation_level            = "developer"
       request_access_enabled            = true
