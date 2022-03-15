@@ -57,7 +57,7 @@ module "gitlab-user-module" {
       username = "voodoo111"
       groups = {
         ennioGroup1 = {
-          access_level = "developer"
+          access_level = "maintainer"
           expires_at   = null
         }
       }
