@@ -12,7 +12,7 @@ tf-fmt:
   stage: terraform:lint
   extends: .base-terraform
   script:
-    - terraform -check -recursive
+    - terraform fmt -check -recursive
   
 tf-validate:
   stage: terraform:lint
