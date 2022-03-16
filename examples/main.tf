@@ -52,9 +52,9 @@ module "gitlab-user-module" {
   users = {
     user_1 = {
       username = "voodoo00065"
-      email = "narit35022@snece.com"
+      email    = "narit35022@snece.com"
       password = "fff+sss1!"
-      name = "Voodoo Voodoo"
+      name     = "Voodoo Voodoo"
       groups = {
         ennioGroup1 = {
           access_level = "maintainer"
@@ -68,9 +68,9 @@ module "gitlab-user-module" {
     }
     user_2 = {
       username = "voodoo11165"
-      email = "nayan85537@superyp.com"
+      email    = "nayan85537@superyp.com"
       password = "fff+sss1!"
-      name = "Voodoo Voodoo"
+      name     = "Voodoo Voodoo"
       groups = {
         ennioGroup1 = {
           access_level = "developer"
