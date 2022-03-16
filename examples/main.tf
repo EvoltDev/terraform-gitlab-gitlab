@@ -1,6 +1,12 @@
+locals {
+  created_groups = merge(module.gitlab-group-module-root.created_groups, module.gitlab-group-module-lvl1.created_groups)
+}
+
 module "gitlab-group-module-root" {
-  source       = "../gitlab-group-module"
-  gitlab_token = var.gitlab_token
+  source = "../gitlab-group-module"
+  providers = {
+    gitlab = gitlab
+  }
   groups = {
     root_group = {
       auto_devops_enabled               = false
@@ -10,7 +16,7 @@ module "gitlab-group-module-root" {
       lfs_enabled                       = true
       mentions_disabled                 = false
       name                              = "dev"
-      parent_key                        = null
+      parent_id                         = 0
       path                              = "dev2249"
       project_creation_level            = "developer"
       request_access_enabled            = true
@@ -21,56 +27,60 @@ module "gitlab-group-module-root" {
       visibility_level                  = "private"
     }
   }
-
 }
 
 module "gitlab-group-module-lvl1" {
-  source        = "../gitlab-group-module"
-  gitlab_token  = var.gitlab_token
-  parent_groups = module.gitlab-group-module-root.created_groups
-
+  source = "../gitlab-group-module"
+  providers = {
+    gitlab = gitlab
+  }
   groups = {
     ennioGroup1 = {
-      name       = "ennioGroup1"
-      path       = "ennioGroup1path"
-      parent_key = "root_group"
+      name      = "ennioGroup1"
+      path      = "ennioGroup1path"
+      parent_id = module.gitlab-group-module-root.created_groups["root_group"].id
     }
   }
 }
 
 module "gitlab-user-module" {
-  source        = "../gitlab-user-module"
-  gitlab_token  = var.gitlab_token
-  root_group_id = module.gitlab-group-module-root.created_groups["root_group"].id
-  groups        = module.gitlab-group-module-lvl1.created_groups
+  source = "../gitlab-user-module"
+  providers = {
+    gitlab = gitlab
+  }
+  groups = local.created_groups
   users = {
     user_1 = {
-      username = "voodoo000"
+      username = "voodoo00065"
+      email = "narit35022@snece.com"
+      password = "fff+sss1!"
+      name = "Voodoo Voodoo"
       groups = {
         ennioGroup1 = {
           access_level = "maintainer"
           expires_at   = null
         }
+        root_group = {
+          access_level = "guest"
+          expires_at   = null
+        }
       }
     }
     user_2 = {
-      username = "voodoo111"
+      username = "voodoo11165"
+      email = "nayan85537@superyp.com"
+      password = "fff+sss1!"
+      name = "Voodoo Voodoo"
       groups = {
         ennioGroup1 = {
           access_level = "developer"
           expires_at   = null
         }
+        root_group = {
+          access_level = "guest"
+          expires_at   = null
+        }
       }
-    }
-  }
-}
-
-terraform {
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "evolt"
-    workspaces {
-      name = "gitlab-module"
     }
   }
 }
