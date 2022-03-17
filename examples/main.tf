@@ -41,7 +41,7 @@ module "gitlab-user-module" {
   groups = local.created_groups
   users = {
     voodoo000 = {
-      create = false
+      create   = false
       username = "voodoo000"
       email    = "narit35022@snece.com"
       name     = "Voodoo Voodoo"

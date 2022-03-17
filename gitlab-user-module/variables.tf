@@ -34,6 +34,6 @@ variable "groups" {
 }
 
 variable "create" {
-  type     = bool
+  type    = bool
   default = false
 }
