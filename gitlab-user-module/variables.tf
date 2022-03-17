@@ -1,6 +1,19 @@
-variable "groups" {
-  description = "Map for list of groups"
+variable "users" {
   type = map(object({
+    create   = optional(bool)
+    username = string
+    email    = string
+    name     = string
+    groups = map(object({
+      access_level = string
+      expires_at   = optional(string) #format: YYYY-MM-DD
+    }))
+  }))
+}
+
+variable "groups" {
+  type = map(object({
+    id                                = number
     name                              = string
     path                              = string
     auto_devops_enabled               = optional(bool)
@@ -20,7 +33,7 @@ variable "groups" {
   }))
 }
 
-variable "parent_id" {
-  type    = number
-  default = 0
+variable "create" {
+  type    = bool
+  default = false
 }
