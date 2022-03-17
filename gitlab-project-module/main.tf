@@ -1,16 +1,13 @@
 resource "gitlab_project" "project" {
-
   for_each = var.projects
 
   # required
-
   name         = each.value.name
   namespace_id = each.value.namespace_id
 
   # optional
-
   allow_merge_on_skipped_pipeline                  = lookup(each.value, "allow_merge_on_skipped_pipeline", false)
-  pprovals_before_merge                            = lookup(each.value, "pprovals_before_merge", 0)
+  approvals_before_merge                            = lookup(each.value, "approvals_before_merge", 0)
   archive_on_destroy                               = lookup(each.value, "archive_on_destroy", null)
   archived                                         = lookup(each.value, "archived", false)
   build_coverage_regex                             = lookup(each.value, "build_coverage_regex", "")
@@ -27,7 +24,7 @@ resource "gitlab_project" "project" {
   lfs_enabled                                      = lookup(each.value, "lfs_enabled", true)
   merge_method                                     = lookup(each.value, "merge_method", "merge")
   merge_pipelines_enabled                          = lookup(each.value, "merge_pipelines_enabled", false)
-  merge_requests_enabled                           = lookup(each.value, "merge_requests_enabled", true)
+  merge_requests_enabled                           = lookup(each.value, "merge_requests_enabled", true) 
   merge_requests_template                          = lookup(each.value, "merge_requests_template", "")
   merge_trains_enabled                             = lookup(each.value, "merge_trains_enabled", false)
   mirror                                           = lookup(each.value, "mirror", false)
@@ -41,23 +38,17 @@ resource "gitlab_project" "project" {
   path                                             = lookup(each.value, "path", each.value.name) # set name as path
   pipelines_enabled                                = lookup(each.value, "pipelines_enabled", true)
   printing_merge_request_link_enabled              = lookup(each.value, "printing_merge_request_link_enabled", true)
-  push_rules                                       = lookup(each.value, "push_rules", [])
+  push_rules                                        {} # lookup(each.value, "push_rules", []) dynamic
   remove_source_branch_after_merge                 = lookup(each.value, "remove_source_branch_after_merge", true)
   request_access_enabled                           = lookup(each.value, "request_access_enabled", true)
   shared_runners_enabled                           = lookup(each.value, "shared_runners_enabled", true)
   snippets_enabled                                 = lookup(each.value, "snippets_enabled", true)
   squash_option                                    = lookup(each.value, "squash_option", "default_off")
-  tags                                             = lookup(each.value, "tags", [])
+  tags                                             = lookup(each.value, "tags", null)
   template_name                                    = lookup(each.value, "template_name", null)
   template_project_id                              = lookup(each.value, "template_project_id", null)
   use_custom_template                              = lookup(each.value, "use_custom_template", null)
   visibility_level                                 = lookup(each.value, "visibility_level", "private")
   wiki_enabled                                     = lookup(each.value, "wiki_enabled", true)
 
-}
-
-resource "gitlab_project_membership" "project_membership" {
-  project_id   = "67890"
-  user_id      = 1234
-  access_level = "guest"
 }

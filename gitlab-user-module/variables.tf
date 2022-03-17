@@ -8,6 +8,9 @@ variable "users" {
       access_level = string
       expires_at   = optional(string) #format: YYYY-MM-DD
     }))
+    projects = optional(map(object({
+      access_level = string
+    })))
   }))
 }
 
@@ -33,7 +36,7 @@ variable "groups" {
   }))
 }
 
-variable "create" {
-  type    = bool
-  default = false
+variable "projects" {
+  description = "Map for list of projects"
+  type = map(any)
 }

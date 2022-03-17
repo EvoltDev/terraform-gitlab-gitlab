@@ -11,12 +11,22 @@ locals {
       }
     ]
   ])
+
+  user_projects = flatten([
+    for user_key, user in var.users : [
+      for project_key, project in user.projects : {
+        user_key     = user_key
+        project_key  = project_key
+        username     = user.username
+        access_level = project.access_level
+      } if user.projects != null
+    ]
+  ])
 }
 
 resource "gitlab_user" "user" {
   for_each = {
-    for username, user in var.users : username => user
-    if coalesce(user.create, false) != false
+    for username, user in var.users : username => user if coalesce(user.create, false) != false
     #if user.create != false
   }
 
@@ -26,7 +36,7 @@ resource "gitlab_user" "user" {
   username = each.value.username
 
   # optional
-  #password          = lookup(each.value, "password", "test+123*%")
+  #password          = lookup(each.value, "password", "test+123*%") null
   can_create_group  = lookup(each.value, "can_create_group", false)
   is_admin          = lookup(each.value, "is_admin", false)
   is_external       = lookup(each.value, "is_external", false)
@@ -54,4 +64,13 @@ resource "gitlab_group_membership" "group_membership" {
   user_id      = data.gitlab_user.user[each.value.user_key].user_id
   access_level = each.value.access_level
   expires_at   = lookup(each.value, "expires_at", null)
+}
+
+resource "gitlab_project_membership" "project_membership" {
+  for_each = {
+    for user_project in local.user_projects : "${user_project.user_key}.${user_project.project_key}" => user_project
+  }
+  project_id   = var.projects[each.value.project_key].id
+  user_id      = data.gitlab_user.user[each.value.user_key].user_id
+  access_level = each.value.access_level
 }

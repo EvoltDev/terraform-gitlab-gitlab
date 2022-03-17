@@ -1,4 +1,4 @@
-variable "gitlab_token" {
-  type    = string
-  default = "glpat-3QiR__myVgzux6pREKzn"
+variable "projects" {
+  description = "Map for list of projects"
+  type = map(any)
 }

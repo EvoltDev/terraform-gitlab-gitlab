@@ -36,9 +36,20 @@ module "gitlab-group-module-lvl1" {
   }
 }
 
+module "gitlab-project-module" {
+  source = "../gitlab-project-module"
+  projects = {
+    react_test_project = {
+      name         = "React test project"
+      namespace_id = local.created_groups["ennioGroup1"]
+    }
+  }
+}
+
 module "gitlab-user-module" {
-  source = "../gitlab-user-module"
-  groups = local.created_groups
+  source   = "../gitlab-user-module"
+  groups   = local.created_groups
+  projects = module.gitlab-project-module.created_projects
   users = {
     voodoo000 = {
       create   = false
@@ -67,6 +78,11 @@ module "gitlab-user-module" {
         root_group = {
           access_level = "guest"
           expires_at   = "2030-12-31"
+        }
+      }
+      projects = {
+        react_test_project = {
+          access_level = "maintainer"
         }
       }
     }
