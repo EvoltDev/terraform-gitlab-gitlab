@@ -4,15 +4,11 @@ locals {
 
 module "gitlab-group-module-root" {
   source = "../gitlab-group-module"
-  providers = {
-    gitlab = gitlab
-  }
   groups = {
     root_group = {
       auto_devops_enabled               = false
       default_branch_protection         = 2
       emails_disabled                   = false
-      id                                = "18694231"
       lfs_enabled                       = true
       mentions_disabled                 = false
       name                              = "dev"
@@ -31,9 +27,6 @@ module "gitlab-group-module-root" {
 
 module "gitlab-group-module-lvl1" {
   source = "../gitlab-group-module"
-  providers = {
-    gitlab = gitlab
-  }
   groups = {
     ennioGroup1 = {
       name      = "ennioGroup1"
@@ -45,15 +38,12 @@ module "gitlab-group-module-lvl1" {
 
 module "gitlab-user-module" {
   source = "../gitlab-user-module"
-  providers = {
-    gitlab = gitlab
-  }
   groups = local.created_groups
   users = {
-    user_1 = {
-      username = "voodoo00065"
+    voodoo000 = {
+      create = false
+      username = "voodoo000"
       email    = "narit35022@snece.com"
-      password = "fff+sss1!"
       name     = "Voodoo Voodoo"
       groups = {
         ennioGroup1 = {
@@ -62,25 +52,25 @@ module "gitlab-user-module" {
         }
         root_group = {
           access_level = "guest"
-          expires_at   = null
         }
       }
     }
-    user_2 = {
-      username = "voodoo11165"
+    voodoo111 = {
+      username = "voodoo111"
       email    = "nayan85537@superyp.com"
-      password = "fff+sss1!"
       name     = "Voodoo Voodoo"
       groups = {
         ennioGroup1 = {
           access_level = "developer"
-          expires_at   = null
+          expires_at   = "2030-12-31"
         }
         root_group = {
           access_level = "guest"
-          expires_at   = null
+          expires_at   = "2030-12-31"
         }
       }
     }
   }
 }
+
+#stvarna imena ljudi i grupa

@@ -1,5 +1,14 @@
 variable "users" {
-  type = map(any)
+  type = map(object({
+    create   = optional(bool)
+    username = string
+    email    = string
+    name     = string
+    groups = map(object({
+      access_level = string
+      expires_at   = optional(string) #format: YYYY-MM-DD
+    }))
+  }))
 }
 
 variable "groups" {
@@ -22,4 +31,9 @@ variable "groups" {
     two_factor_grace_period           = optional(number)
     visibility_level                  = optional(string)
   }))
+}
+
+variable "create" {
+  type     = bool
+  default = false
 }

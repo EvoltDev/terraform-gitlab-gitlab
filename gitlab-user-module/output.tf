@@ -1,3 +1,3 @@
-#output "users" {
-#  value = gitlab_user.user
-#}
+output "users" {
+  value = gitlab_user.user
+}

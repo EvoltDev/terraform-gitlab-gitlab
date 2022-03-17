@@ -14,15 +14,19 @@ locals {
 }
 
 resource "gitlab_user" "user" {
-  for_each = var.users
+  for_each = {
+    for username, user in var.users : username => user
+    if coalesce(user.create, false) != false
+    #if user.create != false
+  }
 
   # required
   email    = each.value.email
   name     = each.value.name
   username = each.value.username
-  password = each.value.password
 
   # optional
+  #password          = lookup(each.value, "password", "test+123*%")
   can_create_group  = lookup(each.value, "can_create_group", false)
   is_admin          = lookup(each.value, "is_admin", false)
   is_external       = lookup(each.value, "is_external", false)
@@ -49,5 +53,5 @@ resource "gitlab_group_membership" "group_membership" {
   group_id     = var.groups[each.value.group_key].id
   user_id      = data.gitlab_user.user[each.value.user_key].user_id
   access_level = each.value.access_level
-  expires_at   = each.value.expires_at
+  expires_at   = lookup(each.value, "expires_at", null)
 }
