@@ -19,15 +19,14 @@ locals {
         project_key  = project_key
         username     = user.username
         access_level = project.access_level
-      } if user.projects != null
-    ]
+      }
+    ] if user.projects != null
   ])
 }
 
 resource "gitlab_user" "user" {
   for_each = {
     for username, user in var.users : username => user if coalesce(user.create, false) != false
-    #if user.create != false
   }
 
   # required
@@ -36,7 +35,7 @@ resource "gitlab_user" "user" {
   username = each.value.username
 
   # optional
-  #password          = lookup(each.value, "password", "test+123*%") null
+  password          = lookup(each.value, "password", null)
   can_create_group  = lookup(each.value, "can_create_group", false)
   is_admin          = lookup(each.value, "is_admin", false)
   is_external       = lookup(each.value, "is_external", false)

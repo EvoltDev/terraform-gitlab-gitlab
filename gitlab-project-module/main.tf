@@ -7,7 +7,7 @@ resource "gitlab_project" "project" {
 
   # optional
   allow_merge_on_skipped_pipeline                  = lookup(each.value, "allow_merge_on_skipped_pipeline", false)
-  approvals_before_merge                            = lookup(each.value, "approvals_before_merge", 0)
+  approvals_before_merge                           = lookup(each.value, "approvals_before_merge", 0)
   archive_on_destroy                               = lookup(each.value, "archive_on_destroy", null)
   archived                                         = lookup(each.value, "archived", false)
   build_coverage_regex                             = lookup(each.value, "build_coverage_regex", "")
@@ -17,14 +17,14 @@ resource "gitlab_project" "project" {
   default_branch                                   = lookup(each.value, "default_branch", "main")
   description                                      = lookup(each.value, "description", "")
   group_with_project_templates_id                  = lookup(each.value, "group_with_project_templates_id", null)
-  import_url                                       = lookup(each.value, "import_url", null)
+  import_url                                       = lookup(each.value, "import_url", "")
   initialize_with_readme                           = lookup(each.value, "initialize_with_readme", null)
   issues_enabled                                   = lookup(each.value, "issues_enabled", true)
   issues_template                                  = lookup(each.value, "issues_template", "")
   lfs_enabled                                      = lookup(each.value, "lfs_enabled", true)
   merge_method                                     = lookup(each.value, "merge_method", "merge")
   merge_pipelines_enabled                          = lookup(each.value, "merge_pipelines_enabled", false)
-  merge_requests_enabled                           = lookup(each.value, "merge_requests_enabled", true) 
+  merge_requests_enabled                           = lookup(each.value, "merge_requests_enabled", true)
   merge_requests_template                          = lookup(each.value, "merge_requests_template", "")
   merge_trains_enabled                             = lookup(each.value, "merge_trains_enabled", false)
   mirror                                           = lookup(each.value, "mirror", false)
@@ -38,17 +38,31 @@ resource "gitlab_project" "project" {
   path                                             = lookup(each.value, "path", each.value.name) # set name as path
   pipelines_enabled                                = lookup(each.value, "pipelines_enabled", true)
   printing_merge_request_link_enabled              = lookup(each.value, "printing_merge_request_link_enabled", true)
-  push_rules                                        {} # lookup(each.value, "push_rules", []) dynamic
   remove_source_branch_after_merge                 = lookup(each.value, "remove_source_branch_after_merge", true)
   request_access_enabled                           = lookup(each.value, "request_access_enabled", true)
   shared_runners_enabled                           = lookup(each.value, "shared_runners_enabled", true)
   snippets_enabled                                 = lookup(each.value, "snippets_enabled", true)
   squash_option                                    = lookup(each.value, "squash_option", "default_off")
-  tags                                             = lookup(each.value, "tags", null)
+  tags                                             = lookup(each.value, "tags", [])
   template_name                                    = lookup(each.value, "template_name", null)
   template_project_id                              = lookup(each.value, "template_project_id", null)
   use_custom_template                              = lookup(each.value, "use_custom_template", null)
   visibility_level                                 = lookup(each.value, "visibility_level", "private")
   wiki_enabled                                     = lookup(each.value, "wiki_enabled", true)
+
+
+  push_rules {
+    commit_committer_check        = lookup(each.value, "commit_committer_check", false)
+    deny_delete_tag               = lookup(each.value, "deny_delete_tag", false)
+    max_file_size                 = lookup(each.value, "max_file_size", 0)
+    member_check                  = lookup(each.value, "member_check", false)
+    prevent_secrets               = lookup(each.value, "prevent_secrets", false)
+    reject_unsigned_commits       = lookup(each.value, "reject_unsigned_commits", false)
+    author_email_regex            = lookup(each.value, "author_email_regex", "")
+    branch_name_regex             = lookup(each.value, "branch_name_regex", "")
+    commit_message_negative_regex = lookup(each.value, "commit_message_negative_regex", "")
+    commit_message_regex          = lookup(each.value, "commit_message_regex", "")
+    file_name_regex               = lookup(each.value, "file_name_regex", "")
+  }
 
 }

@@ -41,7 +41,7 @@ module "gitlab-project-module" {
   projects = {
     react_test_project = {
       name         = "React test project"
-      namespace_id = local.created_groups["ennioGroup1"]
+      namespace_id = local.created_groups["ennioGroup1"].id
     }
   }
 }
@@ -89,4 +89,4 @@ module "gitlab-user-module" {
   }
 }
 
-#stvarna imena ljudi i grupa
+# push real examples so clients can easly understand module
