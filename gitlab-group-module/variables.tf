@@ -20,10 +20,7 @@ variable "groups" {
   }))
 }
 
-variable "gitlab_token" {
-  type = string
-}
-
-variable "users" {
-    type = map(any)
+variable "parent_id" {
+  type    = number
+  default = 0
 }
