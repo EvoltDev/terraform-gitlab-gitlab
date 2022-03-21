@@ -42,7 +42,7 @@ module "gitlab-project-module" {
     react_test_project = {
       name         = "React test project"
       namespace_id = local.created_groups["ennioGroup1"].id
-      push_rules =  {
+      push_rules = {
         commit_committer_check = true
       }
     }
