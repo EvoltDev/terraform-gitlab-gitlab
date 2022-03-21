@@ -50,19 +50,26 @@ resource "gitlab_project" "project" {
   visibility_level                                 = lookup(each.value, "visibility_level", "private")
   wiki_enabled                                     = lookup(each.value, "wiki_enabled", true)
 
-
-  push_rules {
-    commit_committer_check        = lookup(each.value, "commit_committer_check", false)
-    deny_delete_tag               = lookup(each.value, "deny_delete_tag", false)
-    max_file_size                 = lookup(each.value, "max_file_size", 0)
-    member_check                  = lookup(each.value, "member_check", false)
-    prevent_secrets               = lookup(each.value, "prevent_secrets", false)
-    reject_unsigned_commits       = lookup(each.value, "reject_unsigned_commits", false)
-    author_email_regex            = lookup(each.value, "author_email_regex", "")
-    branch_name_regex             = lookup(each.value, "branch_name_regex", "")
-    commit_message_negative_regex = lookup(each.value, "commit_message_negative_regex", "")
-    commit_message_regex          = lookup(each.value, "commit_message_regex", "")
-    file_name_regex               = lookup(each.value, "file_name_regex", "")
+dynamic "push_rules" {
+    for_each = lookup ( each.value, "push_rules", null) != null ? [1] : []
+    content {
+      commit_committer_check = lookup(each.value.push_rules, "commit_committer_check", false)
+      #commit_committer_check = push_rules.value["commit_committer_check"]
+    }
   }
+
+  #push_rules {
+  #  commit_committer_check        = lookup(each.value.push_rules, "commit_committer_check", false)
+  #  deny_delete_tag               = lookup(each.value, "deny_delete_tag", false)
+  #  max_file_size                 = lookup(each.value, "max_file_size", 0)
+  #  member_check                  = lookup(each.value, "member_check", false)
+  #  prevent_secrets               = lookup(each.value, "prevent_secrets", false)
+  #  reject_unsigned_commits       = lookup(each.value, "reject_unsigned_commits", false)
+  #  author_email_regex            = lookup(each.value, "author_email_regex", "")
+  #  branch_name_regex             = lookup(each.value, "branch_name_regex", "")
+  #  commit_message_negative_regex = lookup(each.value, "commit_message_negative_regex", "")
+  #  commit_message_regex          = lookup(each.value, "commit_message_regex", "")
+  #  file_name_regex               = lookup(each.value, "file_name_regex", "")
+  #}
 
 }

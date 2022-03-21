@@ -12,7 +12,7 @@ resource "gitlab_group" "group" {
   emails_disabled                   = lookup(each.value, "emails_disabled", false)
   lfs_enabled                       = lookup(each.value, "lfs_enabled", true)
   mentions_disabled                 = lookup(each.value, "mentions_disabled", false)
-  parent_id                         = lookup(each.value, "parent_id", coalesce(var.parent_id, 0))
+  parent_id                         = lookup(each.value, "parent_id", var.parent_id)
   project_creation_level            = lookup(each.value, "project_creation_level", "Maintainer")
   request_access_enabled            = lookup(each.value, "request_access_enabled", false)
   require_two_factor_authentication = lookup(each.value, "require_two_factor_authentication", false)

@@ -26,7 +26,7 @@ locals {
 
 resource "gitlab_user" "user" {
   for_each = {
-    for username, user in var.users : username => user if coalesce(user.create, false) != false
+    for username, user in var.users : username => user if coalesce(user.create, false)
   }
 
   # required
