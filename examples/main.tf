@@ -49,47 +49,4 @@ module "gitlab-project-module" {
   }
 }
 
-module "gitlab-user-module" {
-  source   = "../gitlab-user-module"
-  groups   = local.created_groups
-  projects = module.gitlab-project-module.created_projects
-  users = {
-    voodoo000 = {
-      create   = false
-      username = "voodoo000"
-      email    = "narit35022@snece.com"
-      name     = "Voodoo Voodoo"
-      groups = {
-        ennioGroup1 = {
-          access_level = "maintainer"
-          expires_at   = null
-        }
-        root_group = {
-          access_level = "guest"
-        }
-      }
-    }
-    voodoo111 = {
-      username = "voodoo111"
-      email    = "nayan85537@superyp.com"
-      name     = "Voodoo Voodoo"
-      groups = {
-        ennioGroup1 = {
-          access_level = "developer"
-          expires_at   = "2030-12-31"
-        }
-        root_group = {
-          access_level = "guest"
-          expires_at   = "2030-12-31"
-        }
-      }
-      projects = {
-        react_test_project = {
-          access_level = "maintainer"
-        }
-      }
-    }
-  }
-}
-
 # push real examples so clients can easly understand module
