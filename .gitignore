@@ -31,4 +31,5 @@ override.tf.json
 
 # Ignore CLI configuration files
 .terraformrc
-terraform.rc.DS_Store
+terraform.rc
+.DS_Store
