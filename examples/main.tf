@@ -1,19 +1,19 @@
 locals {
-  created_groups = merge(module.gitlab-group-module-developers.created_groups, module.gitlab-group-module-frontend.created_groups)
+  created_groups = merge(module.gitlab-group-module-dev.created_groups, module.gitlab-group-module-frontend.created_groups)
 }
 
-module "gitlab-group-module-developers" {
+module "gitlab-group-module-dev" {
   source = "../gitlab-group-module"
   groups = {
-    developers = {
+    dev = {
       auto_devops_enabled               = false
       default_branch_protection         = 2
       emails_disabled                   = false
       lfs_enabled                       = true
       mentions_disabled                 = false
-      name                              = "developers"
+      name                              = "dev"
       parent_id                         = 0
-      path                              = "dev2284"
+      path                              = "dev2249"
       project_creation_level            = "developer"
       request_access_enabled            = true
       require_two_factor_authentication = false
@@ -31,7 +31,7 @@ module "gitlab-group-module-frontend" {
     react = {
       name      = "React"
       path      = "react"
-      parent_id = module.gitlab-group-module-developers.created_groups["developers"].id
+      parent_id = module.gitlab-group-module-dev.created_groups["dev"].id
     }
   }
 }
@@ -64,7 +64,7 @@ module "gitlab-user-module" {
           access_level = "maintainer"
           expires_at   = null
         }
-        developers = {
+        dev = {
           access_level = "guest"
         }
       }
@@ -78,7 +78,7 @@ module "gitlab-user-module" {
           access_level = "developer"
           expires_at   = "2030-12-31"
         }
-        developers = {
+        dev = {
           access_level = "guest"
           expires_at   = "2030-12-31"
         }
