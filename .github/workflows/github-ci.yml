@@ -1,0 +1,12 @@
+jobs:
+ terraform-lint:
+  container: "hashicorp/terraform"
+  steps:
+     - name: Check Terraform version 
+       run: terraform version
+     - name: Check Terraform code format
+       run: terraform fmt -check -recursive
+     - name: Validate Terraform code
+       run: |
+          terraform -chdir=examples/ init -backend-config="token=$TERRAFORM_LOGIN_TOKEN"
+          terraform -chdir=examples/ validate
