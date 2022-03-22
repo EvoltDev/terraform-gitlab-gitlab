@@ -1,5 +1,5 @@
 locals {
-  created_groups = merge(module.gitlab-group-module-root.created_groups, module.gitlab-group-module-lvl1.created_groups)
+  created_groups = merge(module.gitlab-group-module-dev.created_groups, module.gitlab-group-module-frontend.created_groups)
 }
 
 module "gitlab-group-module-root" {
@@ -25,13 +25,13 @@ module "gitlab-group-module-root" {
   }
 }
 
-module "gitlab-group-module-lvl1" {
+module "gitlab-group-module-frontend" {
   source = "../gitlab-group-module"
   groups = {
-    ennioGroup1 = {
-      name      = "ennioGroup1"
-      path      = "ennioGroup1path"
-      parent_id = module.gitlab-group-module-root.created_groups["root_group"].id
+    react = {
+      name      = "React"
+      path      = "react"
+      parent_id = module.gitlab-group-module-dev.created_groups["dev"].id
     }
   }
 }
@@ -39,9 +39,9 @@ module "gitlab-group-module-lvl1" {
 module "gitlab-project-module" {
   source = "../gitlab-project-module"
   projects = {
-    react_test_project = {
-      name         = "React test project"
-      namespace_id = local.created_groups["ennioGroup1"].id
+    react_example_project = {
+      name         = "React example project"
+      namespace_id = local.created_groups["react"].id
       push_rules = {
         commit_committer_check = true
       }
@@ -49,4 +49,45 @@ module "gitlab-project-module" {
   }
 }
 
-# push real examples so clients can easly understand module
+module "gitlab-user-module" {
+  source   = "../gitlab-user-module"
+  groups   = local.created_groups
+  projects = module.gitlab-project-module.created_projects
+  users = {
+    johnharper = {
+      create   = false
+      username = "john.harper"
+      email    = "john.harper@example.com"
+      name     = "John Harper"
+      groups = {
+        react = {
+          access_level = "maintainer"
+          expires_at   = null
+        }
+        dev = {
+          access_level = "guest"
+        }
+      }
+    }
+    chrisharper = {
+      username = "chris.harper"
+      email    = "chris.harper@example.com"
+      name     = "Chris Harper"
+      groups = {
+        react = {
+          access_level = "developer"
+          expires_at   = "2030-12-31"
+        }
+        dev = {
+          access_level = "guest"
+          expires_at   = "2030-12-31"
+        }
+      }
+      projects = {
+        react_example_project = {
+          access_level = "maintainer"
+        }
+      }
+    }
+  }
+}
