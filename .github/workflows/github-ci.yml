@@ -12,8 +12,6 @@ jobs:
      - name: Check Terraform code format
        run: terraform fmt -check -recursive
      - name: Validate Terraform code
-       env: # Or as an environment variable
-       TERRAFORM_LOGIN_TOKEN: ${{ secrets.TERRAFORM_LOGIN_TOKEN }}
        run: |
-          terraform -chdir=examples/ init -backend-config="token=env.TERRAFORM_LOGIN_TOKEN"
+          terraform -chdir=examples/ init -backend-config="token=${{ secrets.TERRAFORM_LOGIN_TOKEN }}"
           terraform -chdir=examples/ validate
