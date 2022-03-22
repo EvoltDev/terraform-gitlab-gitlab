@@ -1,5 +1,5 @@
 locals {
-  created_groups = merge(module.gitlab-group-module-dev.created_groups, module.gitlab-group-module-frontend.created_groups)
+  created_groups = merge(module.gitlab-group-module-dev.created_groups, module.gitlab-group-module-components.created_groups)
 }
 
 module "gitlab-group-module-dev" {
@@ -25,12 +25,17 @@ module "gitlab-group-module-dev" {
   }
 }
 
-module "gitlab-group-module-frontend" {
+module "gitlab-group-module-components" {
   source = "../gitlab-group-module"
   groups = {
-    react = {
-      name      = "React"
-      path      = "react"
+    frontend = {
+      name      = "Frontend"
+      path      = "frontend"
+      parent_id = module.gitlab-group-module-dev.created_groups["dev"].id
+    }
+    backend = {
+      name      = "Backend"
+      path      = "backend"
       parent_id = module.gitlab-group-module-dev.created_groups["dev"].id
     }
   }
@@ -41,10 +46,14 @@ module "gitlab-project-module" {
   projects = {
     react_example_project = {
       name         = "React example project"
-      namespace_id = local.created_groups["react"].id
+      namespace_id = local.created_groups["frontend"].id
       push_rules = {
         commit_committer_check = true
       }
+    }
+    django_example_project = {
+      name         = "Django example project"
+      namespace_id = local.created_groups["backend"].id
     }
   }
 }
@@ -60,7 +69,7 @@ module "gitlab-user-module" {
       email    = "john.harper@example.com"
       name     = "John Harper"
       groups = {
-        react = {
+        frontend = {
           access_level = "maintainer"
           expires_at   = null
         }
@@ -74,7 +83,7 @@ module "gitlab-user-module" {
       email    = "chris.harper@example.com"
       name     = "Chris Harper"
       groups = {
-        react = {
+        backend = {
           access_level = "developer"
           expires_at   = "2030-12-31"
         }
