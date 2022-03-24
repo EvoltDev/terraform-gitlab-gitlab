@@ -32,11 +32,76 @@ module "gitlab-group-module-components" {
     }
   }
 }
-
 ```
 
 ## Gitlab projects
+Use this submodule to create projects on you Gitlab instance or Gitlab.com.
+
+### Module usage:
 ```hcl
+module "gitlab-project-module" {
+  source = "../modules/gitlab-project-module"
+  projects = {
+    react_example_project = {
+      name         = "React example project"
+      namespace_id = local.created_groups["frontend"].id
+      push_rules = {
+        commit_committer_check = true
+      }
+    }
+    django_example_project = {
+      name         = "Django example project"
+      namespace_id = local.created_groups["backend"].id
+    }
+  }
+}
+```
 
+## Gitlab users
+Use this submodule to create users and asign membership to groups or projects.
 
+### Module usage:
+```hcl
+module "gitlab-user-module" {
+  source   = "../modules/gitlab-user-module"
+  groups   = local.created_groups
+  projects = module.gitlab-project-module.created_projects
+  users = {
+    johnharper = {
+      create   = false
+      username = "john.harper"
+      email    = "john.harper@example.com"
+      name     = "John Harper"
+      groups = {
+        frontend = {
+          access_level = "maintainer"
+          expires_at   = null
+        }
+        dev = {
+          access_level = "guest"
+        }
+      }
+    }
+    chrisharper = {
+      username = "chris.harper"
+      email    = "chris.harper@example.com"
+      name     = "Chris Harper"
+      groups = {
+        backend = {
+          access_level = "developer"
+          expires_at   = "2030-12-31"
+        }
+        dev = {
+          access_level = "guest"
+          expires_at   = "2030-12-31"
+        }
+      }
+      projects = {
+        react_example_project = {
+          access_level = "maintainer"
+        }
+      }
+    }
+  }
+}
 ```
