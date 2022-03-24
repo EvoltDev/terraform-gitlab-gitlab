@@ -1,3 +1,4 @@
 output "created_groups" {
-  value = gitlab_group.group
+  description = "List of created groups with module"
+  value       = gitlab_group.group
 }
