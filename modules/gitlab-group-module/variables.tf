@@ -22,6 +22,6 @@ variable "groups" {
 
 variable "parent_id" {
   description = "Parent group id"
-  type    = number
-  default = 0
+  type        = number
+  default     = 0
 }
