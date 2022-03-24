@@ -20,5 +20,4 @@ resource "gitlab_group" "group" {
   subgroup_creation_level           = lookup(each.value, "subgroup_creation_level", "Owner")
   two_factor_grace_period           = lookup(each.value, "two_factor_grace_period", 48)
   visibility_level                  = lookup(each.value, "visibility_level", "private")
-
 }

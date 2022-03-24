@@ -1,8 +1,8 @@
 locals {
-  created_groups = merge(module.gitlab-group-module-dev.created_groups, module.gitlab-group-module-components.created_groups)
+  created_groups = merge(module.gitlab_group_module_dev.created_groups, module.gitlab_group_module_components.created_groups)
 }
 
-module "gitlab-group-module-dev" {
+module "gitlab_group_module_dev" {
   source = "../modules/gitlab-group-module"
   groups = {
     dev = {
@@ -25,7 +25,7 @@ module "gitlab-group-module-dev" {
   }
 }
 
-module "gitlab-group-module-components" {
+module "gitlab_group_module_components" {
   source = "../modules/gitlab-group-module"
   groups = {
     frontend = {
@@ -41,7 +41,7 @@ module "gitlab-group-module-components" {
   }
 }
 
-module "gitlab-project-module" {
+module "gitlab_project_module" {
   source = "../modules/gitlab-project-module"
   projects = {
     react_example_project = {
@@ -58,7 +58,7 @@ module "gitlab-project-module" {
   }
 }
 
-module "gitlab-user-module" {
+module "gitlab_user_module" {
   source   = "../modules/gitlab-user-module"
   groups   = local.created_groups
   projects = module.gitlab-project-module.created_projects
