@@ -55,6 +55,10 @@ module "gitlab_project_module" {
       name         = "Django example project"
       namespace_id = local.created_groups["backend"].id
     }
+    express_example_project = {
+      name         = "Express example project"
+      namespace_id = local.created_groups["backend"].id
+    }
   }
 }
 
