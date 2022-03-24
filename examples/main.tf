@@ -31,12 +31,12 @@ module "gitlab_group_module_components" {
     frontend = {
       name      = "Frontend"
       path      = "frontend"
-      parent_id = module.gitlab-group-module-dev.created_groups["dev"].id
+      parent_id = module.gitlab_group_module_dev.created_groups["dev"].id
     }
     backend = {
       name      = "Backend"
       path      = "backend"
-      parent_id = module.gitlab-group-module-dev.created_groups["dev"].id
+      parent_id = module.gitlab_group_module_dev.created_groups["dev"].id
     }
   }
 }
@@ -61,7 +61,7 @@ module "gitlab_project_module" {
 module "gitlab_user_module" {
   source   = "../modules/gitlab-user-module"
   groups   = local.created_groups
-  projects = module.gitlab-project-module.created_projects
+  projects = module.gitlab_project_module.created_projects
   users = {
     johnharper = {
       create   = false
