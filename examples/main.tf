@@ -11,7 +11,7 @@ module "gitlab-group-module-dev" {
       emails_disabled                   = false
       lfs_enabled                       = true
       mentions_disabled                 = false
-      name                              = "dev"
+      name                              = "dev1"
       parent_id                         = 0
       path                              = "dev2249"
       project_creation_level            = "developer"
