@@ -14,6 +14,8 @@ Import command:
 terraform import 'module.gitlab-group-module-dev.gitlab_group.group["dev"]' <group_id>
 ```
 
+### Module usage:
+
 ```hcl
 module "gitlab-group-module-components" {
   source = "../modules/gitlab-group-module"
@@ -30,5 +32,11 @@ module "gitlab-group-module-components" {
     }
   }
 }
+
+```
+
+## Gitlab projects
+```hcl
+
 
 ```
