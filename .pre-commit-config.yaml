@@ -27,4 +27,3 @@ repos:
     hooks:
       - id: check-merge-conflict
       - id: end-of-file-fixer
-      
