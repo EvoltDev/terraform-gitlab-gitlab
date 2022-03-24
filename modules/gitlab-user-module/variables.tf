@@ -1,4 +1,5 @@
 variable "users" {
+  description = "Map for list of users with groups and projects membership"
   type = map(object({
     create   = optional(bool)
     username = string
@@ -15,6 +16,7 @@ variable "users" {
 }
 
 variable "groups" {
+  description = "Map for list of groups"
   type = map(object({
     id                                = number
     name                              = string
