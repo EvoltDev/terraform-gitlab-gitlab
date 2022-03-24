@@ -29,7 +29,7 @@ module "gitlab-group-module-components" {
   source = "../gitlab-group-module"
   groups = {
     frontend = {
-      name      = "Frontend1"
+      name      = "Frontend"
       path      = "frontend"
       parent_id = module.gitlab-group-module-dev.created_groups["dev"].id
     }
