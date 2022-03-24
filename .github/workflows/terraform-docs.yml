@@ -11,7 +11,7 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
 
-    - name: Render terraform docs inside the README.md and push changes back to PR branch
+    - name: Render terraform docs inside the README.md and push changes back to PR branchh
       uses: terraform-docs/gh-actions@v0.11.0
       with:
         working-dir: .
