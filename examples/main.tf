@@ -3,7 +3,7 @@ locals {
 }
 
 module "gitlab-group-module-dev" {
-  source = "../gitlab-group-module"
+  source = "../modules/gitlab-group-module"
   groups = {
     dev = {
       auto_devops_enabled               = false
@@ -26,7 +26,7 @@ module "gitlab-group-module-dev" {
 }
 
 module "gitlab-group-module-components" {
-  source = "../gitlab-group-module"
+  source = "../modules/gitlab-group-module"
   groups = {
     frontend = {
       name      = "Frontend"
@@ -42,7 +42,7 @@ module "gitlab-group-module-components" {
 }
 
 module "gitlab-project-module" {
-  source = "../gitlab-project-module"
+  source = "../modules/gitlab-project-module"
   projects = {
     react_example_project = {
       name         = "React example project"
@@ -59,7 +59,7 @@ module "gitlab-project-module" {
 }
 
 module "gitlab-user-module" {
-  source   = "../gitlab-user-module"
+  source   = "../modules/gitlab-user-module"
   groups   = local.created_groups
   projects = module.gitlab-project-module.created_projects
   users = {
