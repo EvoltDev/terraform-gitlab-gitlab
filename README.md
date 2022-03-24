@@ -105,3 +105,7 @@ module "gitlab-user-module" {
   }
 }
 ```
+
+## License
+
+Apache 2 Licensed. See [LICENSE](https://github.com/EvoltDev/terraform-gitlab-module/blob/main/LICENCE) for full details.
