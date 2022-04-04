@@ -4,7 +4,7 @@ Terraform module which can help you to create Gitlab resources and assign member
 
 ## Gitlab groups
 
-First of all for Gitlab.com you must create root group thought browser and use import command to add that group in state.
+Due to gitlab issue [Gitlab Issue 244345](https://gitlab.com/gitlab-org/gitlab/-/issues/244345) it is not possible to create root group. As a workaround first you need to create root group thought browser and use import command to add that group in state.
 
 Import command:
 ```
