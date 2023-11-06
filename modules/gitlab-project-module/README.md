@@ -3,14 +3,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.1.6 |
-| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | 3.11.1 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3 |
+| <a name="requirement_gitlab"></a> [gitlab](#requirement\_gitlab) | ~> 16.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | 3.11.1 |
+| <a name="provider_gitlab"></a> [gitlab](#provider\_gitlab) | ~> 16.0 |
 
 ## Modules
 
@@ -20,7 +20,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [gitlab_project.project](https://registry.terraform.io/providers/gitlabhq/gitlab/3.11.1/docs/resources/project) | resource |
+| [gitlab_project.project](https://registry.terraform.io/providers/gitlabhq/gitlab/16.5.0/docs/resources/project) | resource |
 
 ## Inputs
 

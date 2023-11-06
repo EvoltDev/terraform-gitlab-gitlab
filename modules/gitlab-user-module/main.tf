@@ -69,7 +69,7 @@ resource "gitlab_project_membership" "project_membership" {
   for_each = {
     for user_project in local.user_projects : "${user_project.user_key}.${user_project.project_key}" => user_project
   }
-  project_id   = var.projects[each.value.project_key].id
+  project      = var.projects[each.value.project_key].id
   user_id      = data.gitlab_user.user[each.value.user_key].user_id
   access_level = each.value.access_level
 }
